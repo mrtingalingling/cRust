@@ -1,15 +1,31 @@
 {
-  "name": "Getting Started Example",
-  "description": "Build an Extension!",
+  "name": "Curbit",
+  "description": "An item watcher Extension!",
   "version": "1.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
   "permissions": [
+    "declarativeContent",
+    "contextMenus",
     "storage",
     "activeTab",
-    "scripting"
+    "scripting",
+    "tabs",
+    "geolocation"
+  ],
+  "content_scripts": [
+    {
+      "js": [
+        "services/content.js"
+      ],
+      "matches": [
+        "<all_urls>",
+        "http://*/*",
+        "https://*/*"
+      ]
+    }
   ],
   "options_page": "/ui/options.html",
   "action": {

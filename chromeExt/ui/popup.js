@@ -1,47 +1,11 @@
+// The body of this function will be executed as a content script inside the
+// current page
 // When the button is clicked, inject addPageItems into current page
 // To user's Curb_Watcher
-addItem.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true
-    }, function (tabs) {
-        var tab = tabs[0];
-        var url = tab.url;
-        chrome.storage.sync.set({ url });
-    });
-
-    chrome.scripting.executeScript({
-        // target: { tabId: tab.id },
-        function: addPageItems(url),
-    });
-});
-
 'use strict';
-
-let GetURL = document.getElementById('GetURL');
-GetURL.onclick = function (element) {
+let getURL = document.getElementById('getURL');
+getURL.onclick = function (element) {
     getCurrentTabUrl();
-};
-document.getElementById('getText').onclick = function (element) {
-    chrome.tabs.executeScript({
-        code: "window.getSelection().toString();"
-    }, function (selection) {
-        document.getElementById("selectedtext").innerHTML = selection[0];
-    });
-};
-function modifyDOM() {
-    //You can play with your DOM here or check URL against your regex  
-    console.log('Tab script:');
-    console.log(document.body);
-    document.body.style.background = "blue"
-    return true;
-}
-document.getElementById('colorChange').onclick = function (element) {
-    chrome.tabs.executeScript({
-        code: '(' + modifyDOM + ')();' //argument here is a string but function.toString() returns function's code  
-    }, function (selection) {
-        alert(selection);
-    });
 };
 function getCurrentTabUrl() {
     var queryInfo = {
@@ -55,15 +19,39 @@ function getCurrentTabUrl() {
     });
 }
 
-// The body of this function will be executed as a content script inside the
-// current page
+// Get highlighted content
+// document.getElementById('getText').onclick = function (element) {
+//     chrome.scripting.executeScript({
+//         code: "window.getSelection().toString();"
+//     }, function (selection) {
+//         document.getElementById("selectedtext").innerHTML = selection[0];
+//     });
+// };
+
+// Save selected content
+let addItem = document.getElementById("addItem");
+// addItem.addEventListener("click", async () => {
+//     let [tab] = await chrome.tabs.query({
+//         active: true,
+//         currentWindow: true
+//     }, function (tabs) {
+//         var tab = tabs[0];
+//         var url = tab.url;
+//         chrome.storage.sync.set({ url });
+//     });
+
+//     chrome.scripting.executeScript({
+//         // target: { tabId: tab.id },
+//         function: addPageItems(url),
+//     });
+// });
 function addPageItems(url) {
-    // Run teh rust webscraping scraping script
+    // Run the rust webscraping scraping script
     // chrome.storage.sync.get("color", ({ color }) => {
     //     document.body.style.backgroundColor = color;
     // });
 }
 
-
 // https://stackoverflow.com/questions/54727191/chrome-extension-passing-variables-from-html-file-to-js-file
 // https://www.c-sharpcorner.com/article/create-chrome-extension-and-implement-basic-use-cases/
+// https://stackoverflow.com/questions/18049576/simple-highlight-text-chrome-extension
