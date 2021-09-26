@@ -19,14 +19,23 @@ function getCurrentTabUrl() {
     });
 }
 
-// Get highlighted content
-// document.getElementById('getText').onclick = function (element) {
-//     chrome.scripting.executeScript({
-//         code: "window.getSelection().toString();"
-//     }, function (selection) {
-//         document.getElementById("selectedtext").innerHTML = selection[0];
-//     });
-// };
+// Get selected content
+// https://stackoverflow.com/questions/68542700/getting-selected-text-in-a-chrome-extension
+document.getElementById('getText').onclick = async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    let result;
+    try {
+        [{ result }] = await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: () => getSelection().toString(),
+        });
+    } catch (e) {
+        return; // ignoring an unsupported page like chrome://extensions
+    }
+    document.getElementById("selectedtext").innerHTML = result;
+    // document.body.append('Selection: ' + result);
+};
+
 
 // Save selected content
 let addItem = document.getElementById("addItem");
