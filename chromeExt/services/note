@@ -1,0 +1,10 @@
+docker pull node
+
+sudo du -ch -d 1 | sort -hr
+sudo find / -xdev -type f -size +100M -exec ls -lah {} \; | sort -nk 5
+sudo du -xh / |grep '^\S*[0-9\.]\+G'|sort -rn
+sudo docker rm  
+sudo docker system prune -a
+
+https://www.techrepublic.com/article/how-to-free-disk-space-on-linux-systems/
+https://bobcares.com/blog/how-to-clear-docker-cache-and-save-disk-space/
